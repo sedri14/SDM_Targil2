@@ -23,11 +23,10 @@ public class SDMApp extends Application {
         fxmlLoader.setLocation(url);
         Parent root = fxmlLoader.load(url.openStream());
 
-        Scene scene = new Scene(root, 510, 550);
+        Scene scene = new Scene(root);
         final String cssURL = this.getClass().getResource("MainAppCSS.css").toExternalForm();
         scene.getStylesheets().add(cssURL);
         primaryStage.setScene(scene);
         primaryStage.show();
-
     }
 }
