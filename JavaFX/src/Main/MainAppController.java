@@ -50,7 +50,8 @@ public class MainAppController {
     @FXML
     private Button updateButton;
 
-    private SDMManager sdmManager;
+    private
+    SDMManager sdmManager;
     private Boolean hasLoadedSDMFile = false;
 
 

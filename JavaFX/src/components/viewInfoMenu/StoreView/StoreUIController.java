@@ -1,7 +1,11 @@
 package components.viewInfoMenu.StoreView;
 
+import Logic.Inventory.InventoryItem;
+import Logic.Inventory.ePurchaseCategory;
+import Logic.Order.CartItem;
 import Logic.SDM.SDMManager;
 import Logic.Store.Store;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,7 +20,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -43,19 +46,19 @@ public class StoreUIController implements Initializable {
     private TableColumn<Store, Float> storeDeliveryIncomeColumn;
 
     @FXML
-    private TableView<Store> storeInventoryTableView;
+    private TableView<InventoryItem> storeInventoryTableView;
 
     @FXML
-    private TableColumn<Store, Integer> itemIDColumn;
+    private TableColumn<InventoryItem, Integer> itemIDColumn;
 
     @FXML
-    private TableColumn<Store, String> itemNameColumn;
+    private TableColumn<InventoryItem, String> itemNameColumn;
 
     @FXML
-    private TableColumn<Store, String> itemCategoryColumn;
+    private TableColumn<InventoryItem, ObjectProperty<ePurchaseCategory>> itemCategoryColumn;
 
     @FXML
-    private TableColumn<Store, Integer> itemPriceColumn;
+    private TableColumn<CartItem, Integer> itemPriceColumn;
 
     @FXML
     private TableColumn<Store, Float> itemAmountSoldColumn;
@@ -86,9 +89,13 @@ public class StoreUIController implements Initializable {
 
     private SDMManager sdmManager;
     private Store selectedStore;
-    private final ObservableList<Store> storeList = FXCollections.observableArrayList(Store.extractor);
+
     // Observable objects returned by extractor (applied to each list element) are listened for changes and
     // transformed into "update" change of ListChangeListener.
+    private final ObservableList<Store> storeList = FXCollections.observableArrayList(Store.extractor);
+
+
+
     private ChangeListener<Store> storeChangeListener;
 
 
@@ -114,6 +121,38 @@ public class StoreUIController implements Initializable {
         storeNameColumn.setCellValueFactory(new PropertyValueFactory<Store,String>("storeName"));
         storeDeliveryIncomeColumn.setCellValueFactory(new PropertyValueFactory<Store,Float>("totalDeliveryIncome"));
         storePPKColumn.setCellValueFactory(new PropertyValueFactory<Store,Integer>("deliveryPpk"));
+        storeLocationColumn.setCellValueFactory(new PropertyValueFactory<Store,List<Integer>>("storeLocation"));
+
+        itemIDColumn.setCellValueFactory(new PropertyValueFactory<InventoryItem,Integer>("inventoryItemId"));
+        itemNameColumn.setCellValueFactory(new PropertyValueFactory<InventoryItem,String>("itemName"));
+        itemCategoryColumn.setCellValueFactory(new PropertyValueFactory<InventoryItem, ObjectProperty<ePurchaseCategory>>("purchaseCategory"));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         listview.getSelectionModel().selectedItemProperty().addListener(
@@ -126,6 +165,7 @@ public class StoreUIController implements Initializable {
                     if (newValue != null){
                         System.out.println("newVluae is " + newValue);
                         basicInfoTableView.setItems(getStore(newValue));
+                        storeInventoryTableView.setItems(newValue.getInventoryItems());
 
                         //populate controls with selected store information
 
